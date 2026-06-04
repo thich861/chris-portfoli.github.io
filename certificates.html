@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificates - Christophe THILL</title>
+    <style>
+        :root {
+            --bg-gradient-start: #2d5016;
+            --bg-gradient-end: #8B4513;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-color: #2d5016;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+        }
+        header {
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px var(--shadow-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: flex-end; }
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+            white-space: nowrap;
+        }
+        .btn-link:hover { background: var(--border-color); color: white; transform: translateY(-2px); }
+        main { max-width: 1200px; margin: 0 auto; padding: 120px 2rem 2rem; }
+        .section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+        .section h1 { color: var(--text-color); margin-bottom: 0.75rem; font-size: 2.25rem; }
+        .section p { opacity: 0.8; margin-bottom: 1.75rem; }
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
+        .filter-item { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+        .filter-item input { width: 18px; height: 18px; }
+        .certificates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+        .certificate-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            min-height: 220px;
+        }
+        .certificate-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px var(--shadow-color); }
+        .certificate-logo { width: 96px; height: 96px; object-fit: cover; border-radius: 14px; }
+        .certificate-title { font-size: 1rem; font-weight: 800; margin: 0; }
+        .certificate-issuer { font-size: 0.9rem; opacity: 0.75; margin: 0; }
+        @media (max-width: 768px) {
+            main { padding: 110px 1rem 1rem; }
+            .section { padding: 2rem; }
+            .section h1 { font-size: 1.8rem; }
+            nav { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Portfolio</div>
+            <div class="nav-actions">
+                <a class="btn-link" href="index.html#home">Home</a>
+                <a class="btn-link" href="index.html#certificates">Back to Certificates</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="section">
+            <h1>All certificates</h1>
+            <p>Click a certificate to open the link to the credly page or an image of the certificate.</p>
+            <div class="filter-bar" aria-label="Certificate filters">
+                <label class="filter-item">
+                    <input type="checkbox" name="certTag" value="school" checked> School
+                </label>
+                <label class="filter-item">
+                    <input type="checkbox" name="certTag" value="personal"> Personal
+                </label>
+            </div>
+            <div class="certificates-grid">
+                <a href="https://www.credly.com/badges/40cc581f-e198-4391-8a73-972e3a78a764/public_url" target="_blank" rel="noopener noreferrer" class="certificate-card" data-tags="school">
+                    <img src="documents/Certificates/PPT-Certification.png" alt="Microsoft Office Specialist PowerPoint Associate" class="certificate-logo">
+                    <h3 class="certificate-title">PowerPoint Associate</h3>
+                    <p class="certificate-issuer">Microsoft Office Specialist</p>
+                </a>
+                <a href="https://www.credly.com/badges/5cc034f1-e3fa-43f3-b881-da6dc6c5fc48/public_url" target="_blank" rel="noopener noreferrer" class="certificate-card" data-tags="school">
+                    <img src="documents/Certificates/Word-certificate.png" alt="Microsoft Office Specialist Word Associate" class="certificate-logo">
+                    <h3 class="certificate-title">Word Associate</h3>
+                    <p class="certificate-issuer">Microsoft Office Specialist</p>
+                </a>
+                <a href="https://www.credly.com/badges/9289e85b-fc01-4d4d-a8fc-844f2a2d8228/public_url" target="_blank" rel="noopener noreferrer" class="certificate-card" data-tags="school">
+                    <img src="documents/Certificates/AZ900-Certification.png" alt="Microsoft Certified: Azure Fundamentals" class="certificate-logo">
+                    <h3 class="certificate-title">Azure Fundamentals</h3>
+                    <p class="certificate-issuer">Microsoft Certified</p>
+                </a>
+                <a href="https://www.credly.com/badges/52e795c8-6704-42b7-97ed-966b4e7b51a5/public_url" target="_blank" rel="noopener noreferrer" class="certificate-card" data-tags="school">
+                    <img src="documents/Certificates/Word-certification-Expert.png" alt="Microsoft Office Specialist Word Expert" class="certificate-logo">
+                    <h3 class="certificate-title">Word Expert</h3>
+                    <p class="certificate-issuer">Microsoft Office Specialist</p>
+                </a>
+                <a href="documents/Certificates/Brevet d'animateur.pdf" target="_blank" rel="noopener noreferrer" class="certificate-card" data-tags="personal">
+                    <img src="documents/LSG-logo.png" alt="Brevet B: Assistant facilitator" class="certificate-logo">
+                    <h3 class="certificate-title">Brevet B: Assistant facilitator</h3>
+                    <p class="certificate-issuer">SNJ/LGS</p>
+                </a>
+            </div>
+        </section>
+    </main>
+    <script>
+        const filterInputs = Array.from(document.querySelectorAll('input[name="certTag"]'));
+        const certificateCards = Array.from(document.querySelectorAll('.certificate-card'));
+        function applyCertificateFilters() {
+            const activeFilters = filterInputs.filter(i => i.checked).map(i => i.value);
+            certificateCards.forEach(card => {
+                const tags = (card.dataset.tags || '').split(' ').filter(Boolean);
+                const shouldShow = activeFilters.length === 0 || activeFilters.some(f => tags.includes(f));
+                card.style.display = shouldShow ? '' : 'none';
+            });
+        }
+        filterInputs.forEach(i => i.addEventListener('change', applyCertificateFilters));
+        applyCertificateFilters();
+    </script>
+</body>
+</html>

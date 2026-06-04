@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School - Christophe THILL</title>
+    <style>
+        :root {
+            --bg-gradient-start: #2d5016;
+            --bg-gradient-end: #8B4513;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-color: #2d5016;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+        }
+        header {
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px var(--shadow-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+            white-space: nowrap;
+        }
+        .btn-link:hover { background: var(--border-color); color: white; transform: translateY(-2px); }
+        main { max-width: 1200px; margin: 0 auto; padding: 120px 2rem 2rem; display: grid; gap: 2rem; }
+        .section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+        h1 { font-size: 2.25rem; line-height: 1.2; }
+        .content { display: grid; gap: 1rem; margin-top: 1rem; }
+        .content h2 { font-size: 1.4rem; margin-top: 0.75rem; }
+        .content h3 { font-size: 1.1rem; margin-top: 0.5rem; }
+        .content p { opacity: 0.9; }
+        .content li { margin-left: 1.5rem; opacity: 0.9; }
+        @media (max-width: 768px) {
+            main { padding: 110px 1rem 1rem; }
+            .section { padding: 2rem; }
+            h1 { font-size: 1.8rem; }
+            nav { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Portfolio</div>
+            <div class="nav-actions">
+                <a class="btn-link" href="index.html#home">Home</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="section">
+            <div class="content">
+                <h1>Current Education</h1>
+                <h2>Brevet de Technicien Supérieur (BTS) - Cloud Computing</h2>
+                <p>2025-Present</p>
+                <h3>Course Focus:</h3>
+                <li>Cloud Infrastructure and Services</li>
+                <li>Virtualization and Containerization</li>
+                <li>Network Security and Administration</li>
+                <li>Database Management</li>
+                <li>Microsoft Azure Technologies</li>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content">
+                <h1>Courses</h1>
+                <h2>Pluralsight Courses</h2>
+                <p>Microsoft Azure Fundamentals (AZ-900)<br>Future: PowerShell</p>
+                <h2>NetAcad Courses</h2>
+                <p>CCNA Introduction to Networking<br>Python Essentials 1</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

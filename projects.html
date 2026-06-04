@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Christophe THILL</title>
+    <style>
+        :root {
+            --bg-gradient-start: #2d5016;
+            --bg-gradient-end: #8B4513;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-color: #2d5016;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+        }
+        header {
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px var(--shadow-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: flex-end; }
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+            white-space: nowrap;
+        }
+        .btn-link:hover { background: var(--border-color); color: white; transform: translateY(-2px); }
+        main { max-width: 1200px; margin: 0 auto; padding: 120px 2rem 2rem; }
+        .section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+        .section h1 { margin-bottom: 0.75rem; font-size: 2.25rem; }
+        .section p { opacity: 0.8; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            display: grid;
+            justify-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .project-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px var(--shadow-color); }
+        .project-card h3 { margin: 0; font-size: 1.1rem; text-align: center; }
+        .project-logo { width: 120px; height: 120px; object-fit: contain; border-radius: 14px; }
+        @media (max-width: 768px) {
+            main { padding: 110px 1rem 1rem; }
+            .section { padding: 2rem; }
+            .section h1 { font-size: 1.8rem; }
+            nav { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Portfolio</div>
+            <div class="nav-actions">
+                <a class="btn-link" href="index.html#home">Home</a>
+                <a class="btn-link" href="index.html#projects">Back to Projects</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="section">
+            <h1>All projects</h1>
+            <p>Click a project to open the details page.</p>
+            <div class="projects-grid">
+                <a class="project-card" href="project-wsus.html">
+                    <img class="project-logo" src="documents/WSUS-logo.jpg" alt="WSUS logo">
+                    <h3>Windows Server Update Services</h3>
+                </a>
+                <a class="project-card" href="project-troubleshoot.html">
+                    <img class="project-logo" src="documents/Cisco-Packet-Tracer.webp" alt="Cisco Packet Tracer logo">
+                    <h3>Troubleshoot Connectivity Issues</h3>
+                </a>
+                <a class="project-card" href="project-power-apps.html">
+                    <img class="project-logo" src="documents/power-apps.webp" alt="Power Apps logo">
+                    <h3>Microsoft Power Apps: One Piece card collection</h3>
+                </a>
+                <a class="project-card" href="log-analyser.html">
+                    <img class="project-logo" src="documents/Python-logo.svg.png" alt="Python logo">
+                    <h3>Log Analyser</h3>
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
