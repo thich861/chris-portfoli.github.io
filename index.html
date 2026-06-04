@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christophe Thill</title>
+    <style>
+        :root {
+            --bg-start: #2d5016;
+            --bg-end: #8B4513;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: rgba(0, 0, 0, 0.1);
+            --text: #333;
+            --accent: #2d5016;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--bg-start), var(--bg-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        .admin-btn {
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            border: 2px solid var(--accent);
+            color: var(--accent) !important;
+            font-weight: 600 !important;
+            transition: background 0.2s, color 0.2s !important;
+        }
+
+        .admin-btn:hover {
+            background: var(--accent) !important;
+            color: white !important;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 2rem 2rem;
+        }
+
+        .hero {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            box-shadow: 0 20px 40px var(--shadow);
+            margin-bottom: 3rem;
+        }
+
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(45deg, var(--bg-start), var(--bg-end)) border-box;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .hero h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--bg-start), var(--bg-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cv-download { margin-top: 1.25rem; }
+
+        .cv-download a {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            border-radius: 999px;
+            border: 2px solid var(--accent);
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .cv-download a:hover { background: var(--accent); color: white; }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .section h2 {
+            color: var(--text);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(90deg, var(--accent), var(--bg-end)) 1;
+            padding-bottom: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 10px 30px var(--shadow);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px var(--shadow); }
+
+        .card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .card h3 { font-size: 1rem; margin: 0; }
+        .card p { font-size: 0.85rem; opacity: 0.7; margin: 0; }
+
+        .skill-level {
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 999px;
+            height: 8px;
+            margin-top: 4px;
+        }
+
+        .skill-bar {
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--bg-start), var(--bg-end));
+        }
+
+        .section-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-link {
+            padding: 0.6rem 1.2rem;
+            border-radius: 999px;
+            border: 2px solid var(--accent);
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .btn-link:hover { background: var(--accent); color: white; transform: translateY(-2px); }
+
+        .contact-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-email {
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text);
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .contact-email:hover { border-color: var(--accent); }
+
+        .social-links { display: flex; gap: 0.75rem; }
+
+        .social-link {
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+            color: var(--text);
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s, color 0.2s;
+        }
+
+        .social-link:hover { background: var(--accent); color: white; transform: translateY(-2px); }
+        .social-link svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .section-text { opacity: 0.85; max-width: 760px; }
+
+        .reflection-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 70vh;
+            object-fit: contain;
+            display: block;
+            margin-top: 1rem;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { gap: 1rem; flex-wrap: wrap; }
+            .hero { padding: 2rem; }
+            .hero h1 { font-size: 2rem; }
+            .profile-photo { width: 150px; height: 150px; }
+            .grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Portfolio</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#certificates">Certificates</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#workshops">Workshops</a></li>
+                <li><a href="#school">School</a></li>
+                <li><a href="#contacts">Contacts</a></li>
+                <li><a href="admin.html" class="admin-btn">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="profile-container">
+                <img id="profile-photo" src="documents/Professionel Photo.jpg" alt="Profile Photo" class="profile-photo"
+                     onerror="this.src='https://ui-avatars.com/api/?name=CT&size=200&background=2d5016&color=fff&rounded=true'">
+                <div>
+                    <h1 id="hero-name">Christophe THILL</h1>
+                    <p class="subtitle" id="hero-subtitle">BTS Cloud Computing Student</p>
+                    <p class="hero-description" id="hero-description">I am a BTS Cloud Computing student at Lycée Guillaume Kroll in Luxembourg.</p>
+                    <div class="cv-download">
+                        <a id="cv-link" href="aboutMe-CV.html">View my CV</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <h2>Skills</h2>
+            <div class="grid" id="skills-grid"></div>
+        </section>
+
+        <section id="certificates" class="section">
+            <h2>Certificates</h2>
+            <div class="grid" id="certificates-grid"></div>
+            <div class="section-actions">
+                <a class="btn-link" href="certificates.html">See all certificates</a>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <h2>Projects</h2>
+            <div class="grid" id="projects-grid"></div>
+            <div class="section-actions">
+                <a class="btn-link" href="projects.html">See more projects</a>
+            </div>
+        </section>
+
+        <section id="workshops" class="section">
+            <h2>Workshops</h2>
+            <div class="grid" id="workshops-grid"></div>
+        </section>
+
+        <section id="school" class="section">
+            <h2>School</h2>
+            <h3 id="school-name">Lycée Guillaume Kroll</h3>
+            <p class="section-text" id="school-description" style="margin-top:0.5rem;">Brevet de Technicien Supérieur (BTS) - Cloud Computing</p>
+            <a id="school-link" href="school.html" style="margin-top:0.75rem;display:inline-block;color:var(--accent);">View further details</a>
+        </section>
+
+        <section id="contacts" class="section">
+            <h2>Contact me</h2>
+            <div class="contact-row">
+                <a class="contact-email" id="contact-email" href="mailto:christophe.thill@icloud.com">christophe.thill@icloud.com</a>
+                <div class="social-links" id="social-links"></div>
+            </div>
+        </section>
+
+        <section id="reflection" class="section">
+            <h2>Reflection</h2>
+            <p class="section-text" id="reflection-text"></p>
+            <img id="reflection-img" class="reflection-img" src="documents/MS-todo.png" alt="MS Todo"
+                 onerror="this.style.display='none'">
+        </section>
+    </main>
+
+    <script>
+        const DEFAULTS = {
+            hero: {
+                name: "Christophe THILL",
+                subtitle: "BTS Cloud Computing Student",
+                description: "I am a BTS Cloud Computing student at Lycée Guillaume Kroll in Luxembourg.",
+                photo: "documents/Professionel Photo.jpg",
+                cvLink: "aboutMe-CV.html"
+            },
+            skills: [
+                { name: "Azure", level: 75 },
+                { name: "Windows Server", level: 80 },
+                { name: "Networking", level: 65 }
+            ],
+            certificates: [
+                {
+                    title: "PowerPoint Associate",
+                    issuer: "Microsoft Office Specialist",
+                    img: "documents/Certificates/PPT-Certification.png",
+                    link: "https://www.credly.com/badges/40cc581f-e198-4391-8a73-972e3a78a764/public_url"
+                },
+                {
+                    title: "Word Associate",
+                    issuer: "Microsoft Office Specialist",
+                    img: "documents/Certificates/Word-certificate.png",
+                    link: "https://www.credly.com/badges/5cc034f1-e3fa-43f3-b881-da6dc6c5fc48/public_url"
+                },
+                {
+                    title: "Azure Fundamentals",
+                    issuer: "Microsoft Certified",
+                    img: "documents/Certificates/AZ900-Certification.png",
+                    link: "https://www.credly.com/badges/9289e85b-fc01-4d4d-a8fc-844f2a2d8228/public_url"
+                }
+            ],
+            projects: [
+                { title: "Windows Server Update Services", img: "documents/WSUS-logo.jpg", link: "project-wsus.html" },
+                { title: "Troubleshoot Connectivity Issues", img: "documents/Cisco-Packet-Tracer.webp", link: "project-troubleshoot.html" },
+                { title: "Microsoft Power Apps: One Piece card collection", img: "documents/power-apps.webp", link: "project-power-apps.html" }
+            ],
+            workshops: [
+                { name: "Workshop 1", description: "" }
+            ],
+            school: {
+                name: "Lycée Guillaume Kroll",
+                description: "Brevet de Technicien Supérieur (BTS) - Cloud Computing",
+                link: "school.html"
+            },
+            contact: {
+                email: "christophe.thill@icloud.com",
+                linkedin: "https://www.linkedin.com/in/christophe-thill-184026389",
+                github: "https://github.com/thich861"
+            },
+            reflection: {
+                text: "When I joined the BTS I thought it would be easy, because I came from a GIN. But this changed very quickly, when I started the first weeks of OPSYCL. I have organisational problems which led to me pushing every assignment to the last minute. Since a few weeks I have started using MS To Do. This helps me to visualise my work. The next step is to also use MS Outlook to reserve time to do the assignments.",
+                img: "documents/MS-todo.png"
+            }
+        };
+
+        function getData() {
+            try {
+                const stored = localStorage.getItem('portfolioData');
+                return stored ? JSON.parse(stored) : DEFAULTS;
+            } catch {
+                return DEFAULTS;
+            }
+        }
+
+        function render() {
+            const d = getData();
+
+            document.getElementById('hero-name').textContent = d.hero.name;
+            document.getElementById('hero-subtitle').textContent = d.hero.subtitle;
+            document.getElementById('hero-description').textContent = d.hero.description;
+            document.getElementById('profile-photo').src = d.hero.photo;
+            document.getElementById('cv-link').href = d.hero.cvLink;
+
+            document.getElementById('skills-grid').innerHTML = (d.skills || []).map(s => `
+                <div class="card">
+                    <h3>${s.name}</h3>
+                    <div class="skill-level"><div class="skill-bar" style="width:${s.level}%"></div></div>
+                    <small>${s.level}%</small>
+                </div>
+            `).join('');
+
+            document.getElementById('certificates-grid').innerHTML = (d.certificates || []).map(c => `
+                <a href="${c.link}" target="_blank" rel="noopener noreferrer" class="card">
+                    <img src="${c.img}" alt="${c.title}" onerror="this.style.display='none'">
+                    <h3>${c.title}</h3>
+                    <p>${c.issuer}</p>
+                </a>
+            `).join('');
+
+            document.getElementById('projects-grid').innerHTML = (d.projects || []).map(p => `
+                <a href="${p.link}" class="card">
+                    <img src="${p.img}" alt="${p.title}" onerror="this.style.display='none'">
+                    <h3>${p.title}</h3>
+                </a>
+            `).join('');
+
+            document.getElementById('workshops-grid').innerHTML = (d.workshops || []).map(w => `
+                <div class="card">
+                    <h3>${w.name}</h3>
+                    ${w.description ? `<p>${w.description}</p>` : ''}
+                </div>
+            `).join('');
+
+            document.getElementById('school-name').textContent = d.school.name;
+            document.getElementById('school-description').textContent = d.school.description;
+            document.getElementById('school-link').href = d.school.link;
+
+            const emailEl = document.getElementById('contact-email');
+            emailEl.href = 'mailto:' + d.contact.email;
+            emailEl.textContent = d.contact.email;
+
+            document.getElementById('social-links').innerHTML = `
+                <a class="social-link" href="${d.contact.linkedin}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zM6.814 20.452H3.861V9h2.953v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.727v20.545C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.273V1.727C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+                <a class="social-link" href="${d.contact.github}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24"><path d="M12 0.297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                </a>
+            `;
+
+            document.getElementById('reflection-text').textContent = d.reflection.text;
+            const refImg = document.getElementById('reflection-img');
+            if (d.reflection.img) {
+                refImg.src = d.reflection.img;
+                refImg.style.display = 'block';
+            } else {
+                refImg.style.display = 'none';
+            }
+        }
+
+        render();
+        window.addEventListener('storage', render);
+    </script>
+</body>
+</html>

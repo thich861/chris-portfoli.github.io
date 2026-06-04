@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Portfolio</title>
+    <style>
+        :root {
+            --bg-start: #2d5016;
+            --bg-end: #8B4513;
+            --accent: #2d5016;
+            --text: #333;
+            --shadow: rgba(0,0,0,0.1);
+            --border: #e0e0e0;
+            --bg-page: #f5f5f5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-page);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── Top bar ── */
+        .topbar {
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px var(--shadow);
+        }
+
+        .topbar h1 { font-size: 1.25rem; }
+
+        .topbar-actions { display: flex; gap: 0.75rem; align-items: center; }
+
+        .tb-btn {
+            padding: 0.45rem 1rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255,255,255,0.6);
+            background: transparent;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .tb-btn:hover { background: rgba(255,255,255,0.15); }
+
+        .tb-btn.primary {
+            background: white;
+            color: var(--accent);
+            border-color: white;
+        }
+
+        .tb-btn.primary:hover { background: rgba(255,255,255,0.9); }
+
+        /* ── Layout ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* ── Tabs ── */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1.1rem;
+            border-radius: 999px;
+            border: 2px solid var(--border);
+            background: white;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+
+        .tab-btn.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: white;
+        }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── Card ── */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            margin-bottom: 1.25rem;
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        /* ── Form elements ── */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .field { margin-bottom: 1rem; }
+
+        label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        input[type="email"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text);
+            transition: border-color 0.2s;
+            outline: none;
+            background: white;
+        }
+
+        input:focus, textarea:focus { border-color: var(--accent); }
+
+        textarea { resize: vertical; min-height: 100px; }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+        }
+
+        /* ── List items (skills / certs / projects / workshops) ── */
+        .list-item {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .list-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .list-item-title { font-weight: 600; font-size: 0.95rem; }
+
+        .remove-btn {
+            background: #fff0f0;
+            border: none;
+            color: #c0392b;
+            border-radius: 6px;
+            padding: 0.3rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .remove-btn:hover { background: #ffd5d5; }
+
+        .add-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            border: 2px dashed var(--accent);
+            background: transparent;
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .add-btn:hover { background: rgba(45,80,22,0.06); }
+
+        /* ── Toast ── */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.85rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px var(--shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 9999;
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .tabs { gap: 0.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">
+        <h1>Portfolio Admin</h1>
+        <div class="topbar-actions">
+            <a href="index.html" target="_blank" style="color:white;text-decoration:none;font-size:0.9rem;">View site ↗</a>
+            <button class="tb-btn primary" onclick="saveAll()">Save changes</button>
+            <button class="tb-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('hero')">Hero</button>
+            <button class="tab-btn" onclick="showTab('skills')">Skills</button>
+            <button class="tab-btn" onclick="showTab('certificates')">Certificates</button>
+            <button class="tab-btn" onclick="showTab('projects')">Projects</button>
+            <button class="tab-btn" onclick="showTab('workshops')">Workshops</button>
+            <button class="tab-btn" onclick="showTab('school')">School</button>
+            <button class="tab-btn" onclick="showTab('contact')">Contact</button>
+            <button class="tab-btn" onclick="showTab('reflection')">Reflection</button>
+        </div>
+
+        <!-- Hero -->
+        <div class="tab-panel active" id="tab-hero">
+            <div class="card">
+                <h2>Hero Section</h2>
+                <div class="form-row">
+                    <div class="field">
+                        <label>Full Name</label>
+                        <input type="text" id="hero-name">
+                    </div>
+                    <div class="field">
+                        <label>Subtitle</label>
+                        <input type="text" id="hero-subtitle">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Description</label>
+                    <textarea id="hero-description"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="field">
+                        <label>Photo URL</label>
+                        <input type="text" id="hero-photo">
+                    </div>
+                    <div class="field">
+                        <label>CV Link</label>
+                        <input type="text" id="hero-cv">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="tab-panel" id="tab-skills">
+            <div class="card">
+                <h2>Skills</h2>
+                <div id="skills-list"></div>
+                <button class="add-btn" onclick="addSkill()">+ Add skill</button>
+            </div>
+        </div>
+
+        <!-- Certificates -->
+        <div class="tab-panel" id="tab-certificates">
+            <div class="card">
+                <h2>Certificates</h2>
+                <div id="certs-list"></div>
+                <button class="add-btn" onclick="addCert()">+ Add certificate</button>
+            </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="tab-panel" id="tab-projects">
+            <div class="card">
+                <h2>Projects</h2>
+                <div id="projects-list"></div>
+                <button class="add-btn" onclick="addProject()">+ Add project</button>
+            </div>
+        </div>
+
+        <!-- Workshops -->
+        <div class="tab-panel" id="tab-workshops">
+            <div class="card">
+                <h2>Workshops</h2>
+                <div id="workshops-list"></div>
+                <button class="add-btn" onclick="addWorkshop()">+ Add workshop</button>
+            </div>
+        </div>
+
+        <!-- School -->
+        <div class="tab-panel" id="tab-school">
+            <div class="card">
+                <h2>School</h2>
+                <div class="field">
+                    <label>School Name</label>
+                    <input type="text" id="school-name">
+                </div>
+                <div class="field">
+                    <label>Description</label>
+                    <textarea id="school-description"></textarea>
+                </div>
+                <div class="field">
+                    <label>Detail Page Link</label>
+                    <input type="text" id="school-link">
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="tab-panel" id="tab-contact">
+            <div class="card">
+                <h2>Contact</h2>
+                <div class="field">
+                    <label>Email</label>
+                    <input type="email" id="contact-email">
+                </div>
+                <div class="field">
+                    <label>LinkedIn URL</label>
+                    <input type="url" id="contact-linkedin">
+                </div>
+                <div class="field">
+                    <label>GitHub URL</label>
+                    <input type="url" id="contact-github">
+                </div>
+            </div>
+        </div>
+
+        <!-- Reflection -->
+        <div class="tab-panel" id="tab-reflection">
+            <div class="card">
+                <h2>Reflection</h2>
+                <div class="field">
+                    <label>Text</label>
+                    <textarea id="reflection-text" style="min-height:160px;"></textarea>
+                </div>
+                <div class="field">
+                    <label>Image URL (leave empty to hide)</label>
+                    <input type="text" id="reflection-img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Changes saved!</div>
+
+    <script>
+        // Auth guard
+        if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin.html';
+        }
+
+        const DEFAULTS = {
+            hero: {
+                name: "Christophe THILL",
+                subtitle: "BTS Cloud Computing Student",
+                description: "I am a BTS Cloud Computing student at Lycée Guillaume Kroll in Luxembourg.",
+                photo: "documents/Professionel Photo.jpg",
+                cvLink: "aboutMe-CV.html"
+            },
+            skills: [
+                { name: "Azure", level: 75 },
+                { name: "Windows Server", level: 80 },
+                { name: "Networking", level: 65 }
+            ],
+            certificates: [
+                { title: "PowerPoint Associate", issuer: "Microsoft Office Specialist", img: "documents/Certificates/PPT-Certification.png", link: "https://www.credly.com/badges/40cc581f-e198-4391-8a73-972e3a78a764/public_url" },
+                { title: "Word Associate", issuer: "Microsoft Office Specialist", img: "documents/Certificates/Word-certificate.png", link: "https://www.credly.com/badges/5cc034f1-e3fa-43f3-b881-da6dc6c5fc48/public_url" },
+                { title: "Azure Fundamentals", issuer: "Microsoft Certified", img: "documents/Certificates/AZ900-Certification.png", link: "https://www.credly.com/badges/9289e85b-fc01-4d4d-a8fc-844f2a2d8228/public_url" }
+            ],
+            projects: [
+                { title: "Windows Server Update Services", img: "documents/WSUS-logo.jpg", link: "project-wsus.html" },
+                { title: "Troubleshoot Connectivity Issues", img: "documents/Cisco-Packet-Tracer.webp", link: "project-troubleshoot.html" },
+                { title: "Microsoft Power Apps: One Piece card collection", img: "documents/power-apps.webp", link: "project-power-apps.html" }
+            ],
+            workshops: [{ name: "Workshop 1", description: "" }],
+            school: { name: "Lycée Guillaume Kroll", description: "Brevet de Technicien Supérieur (BTS) - Cloud Computing", link: "school.html" },
+            contact: { email: "christophe.thill@icloud.com", linkedin: "https://www.linkedin.com/in/christophe-thill-184026389", github: "https://github.com/thich861" },
+            reflection: {
+                text: "When I joined the BTS I thought it would be easy, because I came from a GIN. But this changed very quickly, when I started the first weeks of OPSYCL. I have organisational problems which led to me pushing every assignment to the last minute. Since a few weeks I have started using MS To Do. This helps me to visualise my work. The next step is to also use MS Outlook to reserve time to do the assignments.",
+                img: "documents/MS-todo.png"
+            }
+        };
+
+        function getData() {
+            try {
+                const s = localStorage.getItem('portfolioData');
+                return s ? JSON.parse(s) : JSON.parse(JSON.stringify(DEFAULTS));
+            } catch { return JSON.parse(JSON.stringify(DEFAULTS)); }
+        }
+
+        let data = getData();
+
+        // ── Tab logic ──
+        function showTab(name) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + name).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // ── Render all form fields from data ──
+        function loadForm() {
+            const d = data;
+
+            document.getElementById('hero-name').value = d.hero.name;
+            document.getElementById('hero-subtitle').value = d.hero.subtitle;
+            document.getElementById('hero-description').value = d.hero.description;
+            document.getElementById('hero-photo').value = d.hero.photo;
+            document.getElementById('hero-cv').value = d.hero.cvLink;
+
+            renderSkills();
+            renderCerts();
+            renderProjects();
+            renderWorkshops();
+
+            document.getElementById('school-name').value = d.school.name;
+            document.getElementById('school-description').value = d.school.description;
+            document.getElementById('school-link').value = d.school.link;
+
+            document.getElementById('contact-email').value = d.contact.email;
+            document.getElementById('contact-linkedin').value = d.contact.linkedin;
+            document.getElementById('contact-github').value = d.contact.github;
+
+            document.getElementById('reflection-text').value = d.reflection.text;
+            document.getElementById('reflection-img').value = d.reflection.img;
+        }
+
+        // ── Skills ──
+        function renderSkills() {
+            document.getElementById('skills-list').innerHTML = data.skills.map((s, i) => `
+                <div class="list-item">
+                    <div class="list-item-header">
+                        <span class="list-item-title">${s.name || 'Skill ' + (i+1)}</span>
+                        <button class="remove-btn" onclick="removeSkill(${i})">Remove</button>
+                    </div>
+                    <div class="form-row">
+                        <div class="field">
+                            <label>Name</label>
+                            <input type="text" value="${s.name}" oninput="data.skills[${i}].name=this.value;refreshSkillTitle(${i},this.value)">
+                        </div>
+                        <div class="field">
+                            <label>Level: <span id="skill-lvl-${i}">${s.level}%</span></label>
+                            <input type="range" min="0" max="100" value="${s.level}" oninput="data.skills[${i}].level=+this.value;document.getElementById('skill-lvl-${i}').textContent=this.value+'%'">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function refreshSkillTitle(i, val) {
+            const header = document.getElementById('skills-list').querySelectorAll('.list-item')[i];
+            if (header) header.querySelector('.list-item-title').textContent = val || ('Skill ' + (i+1));
+        }
+
+        function addSkill() {
+            data.skills.push({ name: '', level: 50 });
+            renderSkills();
+        }
+
+        function removeSkill(i) {
+            data.skills.splice(i, 1);
+            renderSkills();
+        }
+
+        // ── Certificates ──
+        function renderCerts() {
+            document.getElementById('certs-list').innerHTML = data.certificates.map((c, i) => `
+                <div class="list-item">
+                    <div class="list-item-header">
+                        <span class="list-item-title">${c.title || 'Certificate ' + (i+1)}</span>
+                        <button class="remove-btn" onclick="removeCert(${i})">Remove</button>
+                    </div>
+                    <div class="form-row">
+                        <div class="field">
+                            <label>Title</label>
+                            <input type="text" value="${c.title}" oninput="data.certificates[${i}].title=this.value">
+                        </div>
+                        <div class="field">
+                            <label>Issuer</label>
+                            <input type="text" value="${c.issuer}" oninput="data.certificates[${i}].issuer=this.value">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="field">
+                            <label>Image URL</label>
+                            <input type="text" value="${c.img}" oninput="data.certificates[${i}].img=this.value">
+                        </div>
+                        <div class="field">
+                            <label>Badge Link</label>
+                            <input type="url" value="${c.link}" oninput="data.certificates[${i}].link=this.value">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addCert() {
+            data.certificates.push({ title: '', issuer: '', img: '', link: '' });
+            renderCerts();
+        }
+
+        function removeCert(i) {
+            data.certificates.splice(i, 1);
+            renderCerts();
+        }
+
+        // ── Projects ──
+        function renderProjects() {
+            document.getElementById('projects-list').innerHTML = data.projects.map((p, i) => `
+                <div class="list-item">
+                    <div class="list-item-header">
+                        <span class="list-item-title">${p.title || 'Project ' + (i+1)}</span>
+                        <button class="remove-btn" onclick="removeProject(${i})">Remove</button>
+                    </div>
+                    <div class="field">
+                        <label>Title</label>
+                        <input type="text" value="${p.title}" oninput="data.projects[${i}].title=this.value">
+                    </div>
+                    <div class="form-row">
+                        <div class="field">
+                            <label>Image URL</label>
+                            <input type="text" value="${p.img}" oninput="data.projects[${i}].img=this.value">
+                        </div>
+                        <div class="field">
+                            <label>Page Link</label>
+                            <input type="text" value="${p.link}" oninput="data.projects[${i}].link=this.value">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addProject() {
+            data.projects.push({ title: '', img: '', link: '' });
+            renderProjects();
+        }
+
+        function removeProject(i) {
+            data.projects.splice(i, 1);
+            renderProjects();
+        }
+
+        // ── Workshops ──
+        function renderWorkshops() {
+            document.getElementById('workshops-list').innerHTML = data.workshops.map((w, i) => `
+                <div class="list-item">
+                    <div class="list-item-header">
+                        <span class="list-item-title">${w.name || 'Workshop ' + (i+1)}</span>
+                        <button class="remove-btn" onclick="removeWorkshop(${i})">Remove</button>
+                    </div>
+                    <div class="form-row">
+                        <div class="field">
+                            <label>Name</label>
+                            <input type="text" value="${w.name}" oninput="data.workshops[${i}].name=this.value">
+                        </div>
+                        <div class="field">
+                            <label>Description</label>
+                            <input type="text" value="${w.description}" oninput="data.workshops[${i}].description=this.value">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addWorkshop() {
+            data.workshops.push({ name: '', description: '' });
+            renderWorkshops();
+        }
+
+        function removeWorkshop(i) {
+            data.workshops.splice(i, 1);
+            renderWorkshops();
+        }
+
+        // ── Save ──
+        function saveAll() {
+            data.hero.name        = document.getElementById('hero-name').value;
+            data.hero.subtitle    = document.getElementById('hero-subtitle').value;
+            data.hero.description = document.getElementById('hero-description').value;
+            data.hero.photo       = document.getElementById('hero-photo').value;
+            data.hero.cvLink      = document.getElementById('hero-cv').value;
+
+            data.school.name        = document.getElementById('school-name').value;
+            data.school.description = document.getElementById('school-description').value;
+            data.school.link        = document.getElementById('school-link').value;
+
+            data.contact.email    = document.getElementById('contact-email').value;
+            data.contact.linkedin = document.getElementById('contact-linkedin').value;
+            data.contact.github   = document.getElementById('contact-github').value;
+
+            data.reflection.text = document.getElementById('reflection-text').value;
+            data.reflection.img  = document.getElementById('reflection-img').value;
+
+            localStorage.setItem('portfolioData', JSON.stringify(data));
+            showToast('Changes saved!');
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminLoggedIn');
+            window.location.href = 'admin.html';
+        }
+
+        loadForm();
+    </script>
+</body>
+</html>
