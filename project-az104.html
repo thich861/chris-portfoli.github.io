@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZ-104 Project - Christophe THILL</title>
+    <style>
+        :root {
+            --bg-gradient-start: #2d5016;
+            --bg-gradient-end: #8B4513;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-color: #2d5016;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+        }
+        header {
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px var(--shadow-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1rem;
+            border-radius: 999px;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+            white-space: nowrap;
+        }
+        .btn-link:hover { background: var(--border-color); color: white; transform: translateY(-2px); }
+        main { max-width: 1200px; margin: 0 auto; padding: 120px 2rem 2rem; }
+        .section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+        .project-header { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .project-logo { width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: rgba(0,0,0,0.05); padding: 0.5rem; }
+        h1 { font-size: 2.25rem; line-height: 1.2; }
+        .muted { opacity: 0.8; margin-top: 0.25rem; }
+        .content { display: grid; gap: 1rem; margin-top: 1rem; }
+        .content h2 { font-size: 1.4rem; margin-top: 0.75rem; }
+        .content p { opacity: 0.9; }
+        .content ul { margin-left: 1.5rem; opacity: 0.9; }
+        .content li { margin-bottom: 0.25rem; }
+        .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+        .tag { padding: 0.3rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-color); font-size: 0.82rem; font-weight: 600; color: var(--border-color); }
+        @media (max-width: 768px) {
+            main { padding: 110px 1rem 1rem; }
+            .section { padding: 2rem; }
+            h1 { font-size: 1.8rem; }
+            nav { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Portfolio</div>
+            <div class="nav-actions">
+                <a class="btn-link" href="index.html#home">Home</a>
+                <a class="btn-link" href="projects.html">Back to Projects</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="section">
+            <div class="project-header">
+                <img class="project-logo" src="documents/Certificates/AZ900-Certification.png" alt="Azure logo">
+                <div>
+                    <h1>AZ-104 — Azure Web Infrastructure</h1>
+                    <p class="muted">Modules 1 &amp; 2 · Microsoft Azure</p>
+                </div>
+            </div>
+            <div class="content">
+                <div class="tags">
+                    <span class="tag">Microsoft Azure</span>
+                    <span class="tag">Nginx</span>
+                    <span class="tag">Linux VM</span>
+                    <span class="tag">NSG</span>
+                    <span class="tag">Scale Set</span>
+                    <span class="tag">Resource Group</span>
+                    <span class="tag">Azure Database</span>
+                </div>
+                <h2>Overview</h2>
+                <p>
+                    As part of the AZ-104 preparation (first two modules), I deployed a complete web infrastructure
+                    on Microsoft Azure. The goal was to provision and manage Azure resources manually, following
+                    best practices for organisation and security.
+                </p>
+                <h2>Architecture</h2>
+                <ul>
+                    <li>All resources are contained within a single <strong>Resource Group</strong></li>
+                    <li>An <strong>Nginx web server</strong> running on a Linux VM serves as the frontend</li>
+                    <li>A <strong>database VM</strong> runs in the background, accessible only internally</li>
+                    <li>A <strong>Network Security Group (NSG)</strong> controls inbound and outbound traffic rules</li>
+                    <li>A <strong>Virtual Machine Scale Set</strong> manages VM instances for availability and scaling</li>
+                </ul>
+                <h2>Skills practised</h2>
+                <p>
+                    Managing Azure VMs, configuring NSG rules, deploying Scale Sets, connecting services within
+                    a Resource Group, and navigating the Azure Portal and CLI.
+                </p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

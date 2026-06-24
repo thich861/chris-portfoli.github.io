@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects - Christophe THILL</title>
+    <title>NAS Setup Project - Christophe THILL</title>
     <style>
         :root {
             --bg-gradient-start: #2d5016;
@@ -49,7 +49,7 @@
             background-clip: text;
             white-space: nowrap;
         }
-        .nav-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: flex-end; }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
         .btn-link {
             display: inline-flex;
             align-items: center;
@@ -72,28 +72,20 @@
             padding: 3rem;
             box-shadow: 0 20px 40px var(--shadow-color);
         }
-        .section h1 { margin-bottom: 0.75rem; font-size: 2.25rem; }
-        .section p { opacity: 0.8; }
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
-        .project-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 1.25rem;
-            box-shadow: 0 10px 30px var(--shadow-color);
-            display: grid;
-            justify-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: var(--text-color);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .project-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px var(--shadow-color); }
-        .project-card h3 { margin: 0; font-size: 1.1rem; text-align: center; }
-        .project-logo { width: 120px; height: 120px; object-fit: contain; border-radius: 14px; }
+        .project-header { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        h1 { font-size: 2.25rem; line-height: 1.2; }
+        .muted { opacity: 0.8; margin-top: 0.25rem; }
+        .content { display: grid; gap: 1rem; margin-top: 1rem; }
+        .content h2 { font-size: 1.4rem; margin-top: 0.75rem; }
+        .content p { opacity: 0.9; }
+        .content ul { margin-left: 1.5rem; opacity: 0.9; }
+        .content li { margin-bottom: 0.25rem; }
+        .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+        .tag { padding: 0.3rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-color); font-size: 0.82rem; font-weight: 600; color: var(--border-color); }
         @media (max-width: 768px) {
             main { padding: 110px 1rem 1rem; }
             .section { padding: 2rem; }
-            .section h1 { font-size: 1.8rem; }
+            h1 { font-size: 1.8rem; }
             nav { padding: 1rem; }
         }
     </style>
@@ -104,41 +96,46 @@
             <div class="logo">Portfolio</div>
             <div class="nav-actions">
                 <a class="btn-link" href="index.html#home">Home</a>
-                <a class="btn-link" href="index.html#projects">Back to Projects</a>
+                <a class="btn-link" href="projects.html">Back to Projects</a>
             </div>
         </nav>
     </header>
     <main>
         <section class="section">
-            <h1>All projects</h1>
-            <p>Click a project to open the details page.</p>
-            <div class="projects-grid">
-                <a class="project-card" href="project-wsus.html">
-                    <img class="project-logo" src="documents/WSUS-logo.jpg" alt="WSUS logo">
-                    <h3>Windows Server Update Services</h3>
-                </a>
-                <a class="project-card" href="project-troubleshoot.html">
-                    <img class="project-logo" src="documents/Cisco-Packet-Tracer.webp" alt="Cisco Packet Tracer logo">
-                    <h3>Troubleshoot Connectivity Issues</h3>
-                </a>
-                <a class="project-card" href="project-power-apps.html">
-                    <img class="project-logo" src="documents/power-apps.webp" alt="Power Apps logo">
-                    <h3>Microsoft Power Apps: One Piece card collection</h3>
-                </a>
-                <a class="project-card" href="log-analyser.html">
-                    <img class="project-logo" src="documents/Python-logo.svg.png" alt="Python logo">
-                    <h3>Log Analyser</h3>
-                </a>
-                <a class="project-card" href="project-vircl.html">
-                    <h3>VIRCL — Hypervisor &amp; VM Backup</h3>
-                </a>
-                <a class="project-card" href="project-az104.html">
-                    <img class="project-logo" src="documents/Certificates/AZ900-Certification.png" alt="Azure logo">
-                    <h3>AZ-104 — Azure Web Infrastructure</h3>
-                </a>
-                <a class="project-card" href="project-nas.html">
-                    <h3>NAS Setup — OpenMediaVault</h3>
-                </a>
+            <div class="project-header">
+                <div>
+                    <h1>NAS Setup — OpenMediaVault</h1>
+                    <p class="muted">Network Attached Storage installation &amp; configuration</p>
+                </div>
+            </div>
+            <div class="content">
+                <div class="tags">
+                    <span class="tag">OpenMediaVault</span>
+                    <span class="tag">NAS</span>
+                    <span class="tag">Linux (Debian)</span>
+                    <span class="tag">RAID</span>
+                    <span class="tag">SMB / CIFS</span>
+                    <span class="tag">Network Storage</span>
+                </div>
+                <h2>Overview</h2>
+                <p>
+                    In this project I installed and configured a Network Attached Storage (NAS) system using
+                    OpenMediaVault (OMV), a Debian-based NAS operating system. The goal was to set up a
+                    centralised file server accessible over the local network.
+                </p>
+                <h2>What I configured</h2>
+                <ul>
+                    <li>Installed OpenMediaVault on a dedicated machine</li>
+                    <li>Configured disk management and a RAID array for data redundancy</li>
+                    <li>Created shared folders and user access permissions</li>
+                    <li>Enabled SMB/CIFS shares for Windows and Linux clients</li>
+                    <li>Set up the web-based administration interface</li>
+                </ul>
+                <h2>Key takeaways</h2>
+                <p>
+                    This project gave me hands-on experience with NAS administration, RAID configuration,
+                    file sharing protocols, and Linux-based server management through a web UI.
+                </p>
             </div>
         </section>
     </main>
