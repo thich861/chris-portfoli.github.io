@@ -459,7 +459,8 @@
                 { name: "AZ-900", teacher: "Xavier Nix", description: "" },
                 { name: "AZ-040", teacher: "Xavier Nix", description: "" },
                 { name: "Architecture AWS", teacher: "Charlier Arnaud", description: "" },
-                { name: "Project Management & Intro to Work Life", teacher: "Jager Jamey", description: "KPI, OKR, GTD methodologies and introduction to professional work life" }
+                { name: "Project Management & Intro to Work Life", teacher: "Jager Jamey", description: "KPI, OKR, GTD methodologies and introduction to professional work life" },
+                { name: "Introduction to Quantum Computing", teacher: "Alain Hitzig", description: "", external: true }
             ],
             school: {
                 name: "Lycée Guillaume Kroll",
@@ -541,7 +542,7 @@
             document.getElementById('workshops-grid').innerHTML = (d.workshops || []).map(w => `
                 <div class="card">
                     <h3>${w.name}</h3>
-                    ${w.teacher ? `<p style="font-weight:600;opacity:0.75;font-size:0.85rem;">${w.teacher}</p>` : ''}
+                    ${w.teacher ? `<p style="font-weight:600;opacity:0.75;font-size:0.85rem;">${w.teacher}${w.external ? ' <span style="font-size:0.75rem;padding:0.1rem 0.5rem;border-radius:999px;border:1px solid var(--accent);color:var(--accent);font-weight:600;vertical-align:middle;">External Expert</span>' : ''}</p>` : ''}
                     ${w.description ? `<p>${w.description}</p>` : ''}
                 </div>
             `).join('');
