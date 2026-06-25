@@ -486,6 +486,9 @@
                 if (!data.skills?.length || !data.skills.some(s => s.category)) {
                     data.skills = DEFAULTS.skills;
                 }
+                if (!data.workshops?.length || data.workshops.every(w => !w.teacher)) {
+                    data.workshops = DEFAULTS.workshops;
+                }
                 return data;
             } catch {
                 return DEFAULTS;
