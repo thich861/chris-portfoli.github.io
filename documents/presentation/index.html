@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VM Backup &amp; Hypervisor Backup — VIRCL</title>
+<meta name="description" content="VIRCL specialization presentation: VM backup and hypervisor backup on Proxmox VE, compared with VMware.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/tokens.css?v=10">
+<link rel="stylesheet" href="css/main.css?v=10">
+</head>
+<body>
+
+<!-- page-load wipe overlay -->
+<div id="wipe"></div>
+
+<!-- fixed full-viewport WebGL canvas, behind all slides -->
+<canvas id="scene"></canvas>
+
+<!-- ============================================================
+     TOPIC MARKER — floating label above the 3D stop position
+     ============================================================ -->
+<div class="topic-marker" id="topicMarker">
+  <span class="tm-num" id="tmNum">01</span>
+  <div class="tm-text">
+    <h3 id="tmTitle">What is Our Specialization?</h3>
+    <p id="tmDesc">Defining the specialization and why it matters.</p>
+  </div>
+  <div class="tm-arrow"></div>
+</div>
+
+<!-- ============================================================
+     HEADER — wordmark + slide shortcuts
+     ============================================================ -->
+<header class="site-header" id="siteHeader">
+  <nav class="nav-left">
+    <a href="#" data-goto="s-title">Start</a>
+  </nav>
+  <div class="wordmark">VIRCL</div>
+  <div class="nav-right">
+    <a class="btn btn-ghost" href="#" data-goto="s-qa">Q&amp;A</a>
+  </div>
+</header>
+
+<!-- ============================================================
+     THE DECK — fullscreen slides
+     ============================================================ -->
+<main class="deck" id="deck">
+
+  <!-- 1 · TITLE — wide shot of the world -->
+  <section class="slide is-active" id="s-title" data-theme="scene" data-fly="0" data-zoom="1.6">
+    <div class="slide-center">
+      <h1 data-reveal>VM Backup &amp;<br>Hypervisor Backup</h1>
+      <p class="lead" data-reveal>Our specialization in the VIRCL project. Two layers of protection, implemented on Proxmox VE and compared with VMware.</p>
+      <div class="title-meta-grid" data-reveal>
+        <div><span>Team</span><b>Moshe Sarkis Marios &amp; Christophe Thill</b></div>
+        <div><span>Class</span><b>BTS Cloud Computing</b></div>
+        <div><span>School</span><b>Lycée Guillaume Kroll</b></div>
+        <div><span>Teachers</span><b>Christian Rodesch &amp; Maurizio Spagnuolo</b></div>
+        <div><span>Date</span><b>June 2026</b></div>
+      </div>
+    </div>
+    <div class="key-cue" data-reveal>Press <kbd>→</kbd> to enter the world · <kbd>F</kbd> for fullscreen</div>
+  </section>
+
+  <!-- 2 · PROJECT OVERVIEW — before the journey begins -->
+  <section class="slide slide-surface" id="s-overview" data-theme="surface" data-stop="0">
+    <div class="slide-wrap">
+      <div class="kicker" data-reveal><span class="pulse-dot"></span>VIRCL — Server Virtualization Systems</div>
+      <h2 class="big" data-reveal>Project Overview</h2>
+
+      <p class="lead" data-reveal style="max-width: 800px; margin-bottom: clamp(14px, 2vh, 20px);">Deploy two Type-1 hypervisors across four physical servers. Create virtual machines, integrate remote storage, specialize in VM Backup &amp; Hypervisor Backup at both layers, and compare the two platforms head-to-head.</p>
+
+      <div class="infra-diagram" data-reveal>
+        <div class="infra-node" data-reveal>
+          <div class="infra-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8 L32 16 V40 L16 32 Z"/><path d="M16 8 L16 32"/><path d="M32 16 L16 24"/><path d="M32 40 L16 32"/><ellipse cx="24" cy="20" rx="4" ry="2"/><circle cx="24" cy="20" r="1" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div class="infra-label">HP01</div>
+          <div class="infra-sub">Proxmox VE 9.1.1</div>
+          <div class="infra-ip">10.0.10.11</div>
+        </div>
+        <div class="infra-node" data-reveal>
+          <div class="infra-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8 L32 16 V40 L16 32 Z"/><path d="M16 8 L16 32"/><path d="M32 16 L16 24"/><path d="M32 40 L16 32"/><ellipse cx="24" cy="20" rx="4" ry="2"/><circle cx="24" cy="20" r="1" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div class="infra-label">HP03</div>
+          <div class="infra-sub">Proxmox VE 9.1.1</div>
+          <div class="infra-ip">10.0.10.31</div>
+        </div>
+        <div class="infra-node nas-node" data-reveal>
+          <div class="infra-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="6" width="24" height="14" rx="3"/><rect x="12" y="22" width="24" height="14" rx="3"/><rect x="12" y="38" width="24" height="4" rx="1"/><circle cx="20" cy="13" r="1.5" fill="currentColor" stroke="none"/><circle cx="28" cy="13" r="1.5" fill="currentColor" stroke="none"/><circle cx="20" cy="29" r="1.5" fill="currentColor" stroke="none"/><circle cx="28" cy="29" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div class="infra-label">CLOIF2 NAS</div>
+          <div class="infra-sub">OpenMediaVault</div>
+          <div class="infra-ip">10.0.13.1</div>
+        </div>
+        <div class="infra-node" data-reveal>
+          <div class="infra-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8 L32 16 V40 L16 32 Z"/><path d="M16 8 L16 32"/><path d="M32 16 L16 24"/><path d="M32 40 L16 32"/><ellipse cx="24" cy="20" rx="4" ry="2"/><circle cx="24" cy="20" r="1" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div class="infra-label">HP02</div>
+          <div class="infra-sub">VMware ESXi</div>
+          <div class="infra-ip">10.0.10.21</div>
+        </div>
+        <div class="infra-node" data-reveal>
+          <div class="infra-icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8 L32 16 V40 L16 32 Z"/><path d="M16 8 L16 32"/><path d="M32 16 L16 24"/><path d="M32 40 L16 32"/><ellipse cx="24" cy="20" rx="4" ry="2"/><circle cx="24" cy="20" r="1" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div class="infra-label">HP04</div>
+          <div class="infra-sub">VMware ESXi</div>
+          <div class="infra-ip">10.0.10.41</div>
+        </div>
+      </div>
+
+      <div class="team-grid" data-reveal>
+        <div class="team-card team-marios" data-reveal>
+          <div class="team-header">
+            <div class="team-avatar">
+              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4 L34 12 L34 28 L20 36 L6 28 L6 12 Z"/><path d="M20 20 L34 12 M20 20 L6 12 M20 20 V36"/><ellipse cx="20" cy="20" rx="6" ry="3"/></svg>
+            </div>
+            <div class="team-name">
+              <span class="team-name-label">Moshe Sarkis Marios</span>
+              <span class="team-role">Proxmox Specialist</span>
+            </div>
+          </div>
+          <div class="team-details">
+            <div class="team-row"><span class="t-label">Hypervisor</span><span class="t-val">Proxmox VE 9.1.1</span></div>
+            <div class="team-row"><span class="t-label">Servers</span><span class="t-val">HP01 + HP03</span></div>
+            <div class="team-row"><span class="t-label">iLO</span><span class="t-val">192.168.0.1 / 192.168.0.3</span></div>
+            <div class="team-row"><span class="t-label">Focus</span><span class="t-val t-focus">Proxmox</span></div>
+          </div>
+        </div>
+        <div class="team-card team-christophe" data-reveal>
+          <div class="team-header">
+            <div class="team-avatar">
+              <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="24" height="6" rx="1.5"/><rect x="8" y="14" width="24" height="6" rx="1.5"/><rect x="8" y="24" width="24" height="6" rx="1.5"/><circle cx="14" cy="7" r="1" fill="currentColor" stroke="none"/><circle cx="26" cy="7" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="17" r="1" fill="currentColor" stroke="none"/><circle cx="26" cy="17" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="27" r="1" fill="currentColor" stroke="none"/><circle cx="26" cy="27" r="1" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <div class="team-name">
+              <span class="team-name-label">Christophe Thill</span>
+              <span class="team-role">VMware Specialist</span>
+            </div>
+          </div>
+          <div class="team-details">
+            <div class="team-row"><span class="t-label">Hypervisor</span><span class="t-val">VMware ESXi / vSphere</span></div>
+            <div class="team-row"><span class="t-label">Servers</span><span class="t-val">HP02 + HP04</span></div>
+            <div class="team-row"><span class="t-label">iLO</span><span class="t-val">192.168.0.2 / 192.168.0.4</span></div>
+            <div class="team-row"><span class="t-label">Focus</span><span class="t-val t-focus">VMware</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="net-badge" data-reveal>
+        <span class="net-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><path d="M8 1 V3 M8 13 V15 M1 8 H3 M13 8 H15"/></svg>
+        </span>
+        <span class="net-text">School Infrastructure — 10.0.10.0/16</span>
+        <span class="net-sep">|</span>
+        <span class="net-text">iLO Management — 192.168.0.0/24</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · ZOOM IN — camera moves to the start of the track -->
+  <section class="slide" id="s-zoomin" data-theme="scene" data-fly="0" data-zoom="1.0" data-dur="1.8">
+    <div class="slide-center zoom-cue">
+      <p class="lead" data-reveal>Entering the infrastructure…</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STOP 1 — What is Our Specialization? & Why It Matters
+       ============================================================ -->
+
+  <!-- 3 · STOP 1 MARKER -->
+  <section class="slide" id="s-stop1" data-theme="scene" data-fly="0.18" data-zoom="1.0" data-marker="1" data-dur="1.5">
+  </section>
+
+  <!-- 4 · STOP 1 CONTENT -->
+  <section class="slide slide-surface" id="s-content1" data-theme="surface" data-stop="1">
+    <div class="slide-wrap">
+      <div class="kicker" data-reveal><span class="pulse-dot"></span>01 — What is Our Specialization? &amp; Why It Matters</div>
+      <h2 class="big" data-reveal>Two layers. One backup strategy.</h2>
+
+      <!-- Two-layer hero diagram — HORIZONTAL layout -->
+      <div class="layer-hero" data-reveal>
+        <div class="layer-pair">
+          <div class="layer-card vm">
+            <div class="layer-card-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="8" width="28" height="32" rx="4"/><rect x="14" y="12" width="20" height="12" rx="2"/><line x1="14" y1="28" x2="34" y2="28"/><line x1="14" y1="32" x2="28" y2="32"/><circle cx="30" cy="36" r="3" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <div class="layer-card-text">
+              <span class="tag">VM Layer</span>
+              <span class="desc">The workload — VMs, disks, config</span>
+            </div>
+          </div>
+          <div class="layer-connector">
+            <div class="conn-line"></div>
+            <div class="conn-badge">BACKUP</div>
+            <div class="conn-line"></div>
+          </div>
+          <div class="layer-card hv">
+            <div class="layer-card-icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="12" width="36" height="24" rx="3"/><line x1="6" y1="20" x2="42" y2="20"/><line x1="6" y1="28" x2="42" y2="28"/><line x1="14" y1="16" x2="14" y2="16"/><line x1="20" y1="16" x2="20" y2="16"/><line x1="26" y1="16" x2="26" y2="16"/><line x1="14" y1="24" x2="14" y2="24"/><line x1="20" y1="24" x2="20" y2="24"/><line x1="26" y1="24" x2="26" y2="24"/><line x1="14" y1="32" x2="14" y2="32"/><line x1="20" y1="32" x2="20" y2="32"/><line x1="26" y1="32" x2="26" y2="32"/></svg>
+            </div>
+            <div class="layer-card-text">
+              <span class="tag">Hypervisor Layer</span>
+              <span class="desc">The platform — host, network, storage</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Three info cards -->
+      <div class="intro-cards-v2">
+        <div class="intro-card-v2 vm-card" data-reveal>
+          <div class="card-icon-wrap">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="32" cy="22" rx="20" ry="10"/><path d="M12 22 L12 36 C12 44 20 48 32 48 C44 48 52 44 52 36 L52 22"/><path d="M12 36 C12 44 20 48 32 48 C44 48 52 44 52 36"/><path d="M24 38 L28 42 L40 30"/><circle cx="32" cy="22" r="3" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <h3>What is a VM backup?</h3>
+          <p>A VM backup captures the <b>entire virtual machine</b> at a point in time: disks, configuration, and optionally RAM. If the VM is corrupted, infected, or accidentally deleted, the backup is the only way back.</p>
+        </div>
+        <div class="intro-card-v2 hv-card" data-reveal>
+          <div class="card-icon-wrap">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12 L42 20 V24 L22 16 Z"/><path d="M22 24 L42 32 V36 L22 28 Z"/><path d="M22 36 L42 44 V48 L22 40 Z"/><line x1="22" y1="16" x2="22" y2="24"/><line x1="42" y1="24" x2="42" y2="32"/><line x1="22" y1="28" x2="22" y2="36"/><line x1="42" y1="36" x2="42" y2="44"/><line x1="22" y1="40" x2="22" y2="48"/><line x1="42" y1="48" x2="42" y2="56"/><circle cx="28" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="36" cy="23" r="1.5" fill="currentColor" stroke="none"/><circle cx="28" cy="32" r="1.5" fill="currentColor" stroke="none"/><circle cx="36" cy="35" r="1.5" fill="currentColor" stroke="none"/><circle cx="28" cy="44" r="1.5" fill="currentColor" stroke="none"/><circle cx="36" cy="47" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <h3>What is a hypervisor backup?</h3>
+          <p>While the VM backup protects the <b>workload</b>, the hypervisor backup protects the <b>platform</b>: cluster configuration, network bridges, storage definitions, users, and permissions.</p>
+        </div>
+        <div class="intro-card-v2 risk-card" data-reveal>
+          <div class="card-icon-wrap">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8 L12 18 V30 C12 42 32 56 32 56 C32 56 52 42 52 30 V18 Z"/><path d="M32 18 L32 34 M32 40 V41.5"/></svg>
+          </div>
+          <h3>Why this matters</h3>
+          <p>Every business runs on virtualized infrastructure. Ransomware, hardware failure, and human error are not hypothetical — they are daily events. A backup strategy is not optional.</p>
+        </div>
+      </div>
+
+      <!-- RPO / RTO dashboard -->
+      <div class="rto-dashboard" data-reveal>
+        <h3>RPO &amp; RTO: the two numbers that define your risk</h3>
+        <div class="rto-grid-v2">
+          <div class="rto-card-v2 rpo">
+            <span class="rto-label">RPO — Recovery Point Objective</span>
+            <span class="rto-big">How much data can you lose?</span>
+            <p>If your last backup was <b>24 hours ago</b>, your RPO is 24 hours. Every transaction in that window is gone.</p>
+            <div class="rto-stat-big">
+              <span class="rto-stat-num">7</span>
+              <span class="rto-stat-unit">DAYS</span>
+            </div>
+            <div class="rto-meter-v2"><div class="rto-meter-fill-v2" style="width:70%"></div></div>
+            <div class="rto-meter-labels-v2"><span>0h</span><span>24h</span><span>7d</span></div>
+          </div>
+          <div class="rto-card-v2 rto">
+            <span class="rto-label">RTO — Recovery Time Objective</span>
+            <span class="rto-big">How long can you stay down?</span>
+            <p>A full VM restore takes <b>minutes</b>. Rebuilding a hypervisor from scratch takes <b>hours or days</b>.</p>
+            <div class="rto-stat-big">
+              <span class="rto-stat-num" style="color:#d93444">2 hrs</span>
+              <span class="rto-stat-unit">REBUILD TIME</span>
+            </div>
+            <div class="rto-meter-v2"><div class="rto-meter-fill-v2" style="width:85%"></div></div>
+            <div class="rto-meter-labels-v2"><span>5 min</span><span>1 hr</span><span>2+ hrs</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · STOP 1 RETURN (marker reappears) -->
+  <section class="slide" id="s-return1" data-theme="scene" data-fly="0.18" data-zoom="1.0" data-marker="1">
+  </section>
+
+  <!-- ============================================================
+       STOP 2 — Two Layers & Technical Deep Dive
+       ============================================================ -->
+
+  <!-- 6 · FLIGHT TO STOP 2 -->
+  <section class="slide" id="s-flight2" data-theme="scene" data-fly="0.35" data-zoom="1.0" data-marker="2" data-dur="1.8">
+  </section>
+
+  <!-- 7 · STOP 2 MARKER -->
+  <section class="slide" id="s-stop2" data-theme="scene" data-fly="0.35" data-zoom="1.0" data-marker="2" data-dur="1.5">
+  </section>
+
+  <!-- 8 · STOP 2 CONTENT -->
+  <section class="slide slide-surface" id="s-content2" data-theme="surface" data-stop="2">
+    <div class="slide-wrap">
+      <div class="kicker" data-reveal>02 — Two Layers &amp; Technical Deep Dive</div>
+      <h2 class="big" data-reveal>Two different failures.<br>Two different backups.</h2>
+      <div class="feature-grid">
+        <div class="feature-card" data-reveal>
+          <div class="icon"><svg viewBox="0 0 88 88"><g stroke-linejoin="round" stroke-linecap="round"><path d="M44 12 L72 26 L44 40 L16 26 Z"/><path d="M16 26 V58 L44 72 V40"/><path d="M72 26 V58 L44 72"/></g></svg></div>
+          <h3>VM Backup — Full Machine State</h3>
+          <p>A VM backup is <b>not a file copy</b>. It captures the entire machine state: disk blocks, OS configuration, installed applications, and optionally live RAM. When restored, the VM boots exactly as it was — no reinstallation, no reconfiguration, no patching gaps.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="icon"><svg viewBox="0 0 88 88"><g stroke-linejoin="round" stroke-linecap="round"><path d="M30 14 L62 30 V62 L30 46 Z"/><path d="M30 14 L18 20 V52 L30 58"/><path d="M30 30 L62 46 M30 38 L62 54" opacity=".45"/></g></svg></div>
+          <h3>Hypervisor Backup — The Infrastructure Blueprint</h3>
+          <p>A hypervisor backup captures the <b>platform topology</b>: network bridges, storage mappings, virtual switches, resource pools, and access controls. It is the blueprint that tells the infrastructure how to host the VMs. Without it, you have the machines but nowhere to run them.</p>
+        </div>
+      </div>
+      <div class="modes-section" data-reveal>
+        <h3>Three backup modes. One trade-off: downtime vs consistency.</h3>
+        <div class="modes-split">
+          <div class="modes-cols-v2">
+            <div class="mode-card-v2" data-reveal>
+              <span class="tag-time t-green">No downtime</span>
+              <h3>Snapshot</h3>
+              <p>QEMU live snapshot — the VM keeps running while the backup is taken.</p>
+              <p class="mode-meta">Consistency: crash-consistent<br>Use for: <b>production VMs</b></p>
+            </div>
+            <div class="mode-card-v2" data-reveal>
+              <span class="tag-time t-amber">Seconds of pause</span>
+              <h3>Suspend</h3>
+              <p>The VM is paused, backed up, then resumed — a short freeze for a cleaner state.</p>
+              <p class="mode-meta">Consistency: better<br>Use for: <b>sensitive applications</b></p>
+            </div>
+            <div class="mode-card-v2" data-reveal>
+              <span class="tag-time t-red">Minutes of downtime</span>
+              <h3>Stop</h3>
+              <p>Full shutdown, backup, restart — nothing changes on disk during the backup.</p>
+              <p class="mode-meta">Consistency: full<br>Use for: <b>maintenance windows</b></p>
+            </div>
+          </div>
+          <div class="modes-graph-wrap" data-reveal>
+            <figure class="shot"><img src="img/vm_backup_graph.png" alt="VM backup modes trade-off: downtime vs consistency" data-lightbox></figure>
+          </div>
+        </div>
+      </div>
+      <div class="not-banner" data-reveal>
+        <h3>A snapshot is <span class="no">not</span> a backup.</h3>
+        <p>A snapshot is a delta disk that depends on the base disk. When the storage underneath dies, the snapshot dies with it. Real backups live on separate storage.</p>
+      </div>
+      <div class="rule-321" data-reveal>
+        <span class="nums">3<span>·</span>2<span>·</span>1</span>
+        <p><b>Three</b> copies of the data, on <b>two</b> different media, <b>one</b> off-site. Ours live on the CLOIF2 NAS.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · STOP 2 RETURN -->
+  <section class="slide" id="s-return2" data-theme="scene" data-fly="0.35" data-zoom="1.0" data-marker="2">
+  </section>
+
+  <!-- ============================================================
+       STOP 3 — Proxmox vs VMware
+       ============================================================ -->
+
+  <!-- 10 · FLIGHT TO STOP 3 -->
+  <section class="slide" id="s-flight3" data-theme="scene" data-fly="0.54" data-zoom="1.0" data-marker="3" data-dur="1.8">
+  </section>
+
+  <!-- 11 · STOP 3 MARKER -->
+  <section class="slide" id="s-stop3" data-theme="scene" data-fly="0.54" data-zoom="1.0" data-marker="3" data-dur="1.5">
+  </section>
+
+  <!-- 12 · STOP 3 CONTENT -->
+  <section class="slide slide-surface" id="s-content3" data-theme="surface" data-stop="3">
+    <div class="slide-wrap">
+      <div class="kicker" data-reveal>03 — Proxmox vs VMware</div>
+      <h2 class="big" data-reveal>The verdict.</h2>
+      <div class="verdict-grid">
+        <div class="compare-intro" data-reveal>
+          <div class="compare-intro-card">
+            <h3>Two approaches. One goal.</h3>
+            <p>Proxmox VE integrates backup directly into the hypervisor. VMware vSphere relies on third-party tools from the ecosystem. Both protect VMs and hosts, but the <b>path, cost, and control</b> differ.</p>
+            <div class="compare-pills">
+              <span class="pill-tag pro">Proxmox</span>
+              <span class="pill-tag vmw">VMware</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-table" data-reveal>
+          <table>
+            <thead><tr><th></th><th>Proxmox</th><th>VMware</th><th>Better</th></tr></thead>
+            <tbody>
+              <tr><td><b>VM backup tool</b></td><td>vzdump, built in</td><td>3rd party (Veeam, …)</td><td><span class="pill-tag win">Proxmox</span></td></tr>
+              <tr><td><b>Backup format</b></td><td>VMA + ZSTD</td><td>VMDK + VMX</td><td><span class="pill-tag tie">Tie</span></td></tr>
+              <tr><td><b>Hypervisor config</b></td><td>tar /etc/pve, CLI only</td><td>vCenter backup, GUI</td><td><span class="pill-tag win">VMware</span></td></tr>
+              <tr><td><b>Enterprise option</b></td><td>PBS, free</td><td>Veeam, ≈ $400+ / socket / year</td><td><span class="pill-tag win">Proxmox</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="impl-grid" data-reveal>
+        <div>
+          <h3>Proxmox: backup is built in.</h3>
+          <div class="demo-step"><div class="num">01</div><div><h4>GUI backup</h4><p><b>vzdump</b> ships with the hypervisor — snapshot mode, ZSTD, straight from the web UI.</p></div></div>
+          <div class="demo-step"><div class="num">02</div><div><h4>CLI backup</h4><p>The same engine scripted: <code>vzdump 100 --mode snapshot --compress zstd</code></p></div></div>
+          <div class="demo-step"><div class="num">03</div><div><h4>Custom script</h4><p>My bash wrapper adds logging to <code>/var/log/vm_backup.log</code> for an audit trail.</p></div></div>
+          <div class="demo-step"><div class="num">04</div><div><h4>Scheduled, to the NAS</h4><p>Weekly job to the CLOIF2 NAS over NFS, retention: keep last 3 — no human required.</p></div></div>
+        </div>
+        <div>
+          <h3>VMware: backup is an ecosystem.</h3>
+          <ul class="vs-list">
+            <li><span class="mark y">+</span><span><b>CBT + VADP</b>: mature APIs built exactly for incremental backups</span></li>
+            <li><span class="mark y">+</span><span><b>vCenter config backup</b> is built in and can be scheduled</span></li>
+            <li><span class="mark y">+</span><span>Huge tool ecosystem: <b>Veeam, Rubrik, Cohesity</b></span></li>
+            <li><span class="mark n">−</span><span>No native VM backup tool: <b>third-party software required</b></span></li>
+            <li><span class="mark n">−</span><span>And it is <b>paid</b> — licensing decides what you get</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 · STOP 3 RETURN -->
+  <section class="slide" id="s-return3" data-theme="scene" data-fly="0.54" data-zoom="1.0" data-marker="3">
+  </section>
+
+  <!-- ============================================================
+       STOP 4 — Live Demo & Problem-Solving
+       ============================================================ -->
+
+  <!-- 14 · FLIGHT TO STOP 4 -->
+  <section class="slide" id="s-flight4" data-theme="scene" data-fly="0.74" data-zoom="1.0" data-marker="4" data-dur="1.8">
+  </section>
+
+  <!-- 15 · STOP 4 MARKER -->
+  <section class="slide" id="s-stop4" data-theme="scene" data-fly="0.74" data-zoom="1.0" data-marker="4" data-dur="1.5">
+  </section>
+
+  <!-- 16 · STOP 4 CONTENT -->
+  <section class="slide slide-surface" id="s-content4" data-theme="surface" data-stop="4">
+    <div class="slide-wrap">
+      <div class="kicker" data-reveal>04 — Live Demo &amp; Problem-Solving</div>
+      <h2 class="big" data-reveal>Now live: backup, restore, and the fix.</h2>
+      <div class="demo-grid">
+        <div data-reveal>
+          <div class="demo-step"><div class="num">01</div><div><h4>GUI backup</h4><p>VM → Backup → <code>Backup now</code>: snapshot mode, ZSTD, target: NAS storage.</p></div></div>
+          <div class="demo-step"><div class="num">02</div><div><h4>CLI backup</h4><p><code>vzdump 100 --mode snapshot --compress zstd</code> — same engine, scriptable.</p></div></div>
+          <div class="stat-row" data-reveal>
+            <span class="stat-big">32 GB</span><span class="stat-arrow">→</span><span class="stat-big">2.86 GB</span>
+            <span class="stat-label">one VM, one compressed archive</span>
+          </div>
+          <div class="demo-step"><div class="num">03</div><div><h4>Backup script</h4><p>My bash wrapper with logging to <code>/var/log/vm_backup.log</code>.</p></div></div>
+          <div class="demo-step"><div class="num">04</div><div><h4>Restore</h4><p><code>qmrestore backup.vma.zst 200</code> — the proof the backup actually works.</p></div></div>
+          <div class="demo-step"><div class="num">05</div><div><h4>Hypervisor config</h4><p><code>tar -czf hp01-config.tar.gz /etc/pve …</code> — the second layer, 15 KB that saves a rebuild.</p></div></div>
+        </div>
+        <div data-reveal>
+          <div class="terminal">
+            <div class="terminal-bar"><i></i><i></i><i></i></div>
+            <pre><span class="c"># back up a running VM, no downtime</span>
+<span class="p">root@HP01:~#</span> vzdump 100 <span class="f">--mode</span> snapshot <span class="f">--compress</span> zstd
+INFO: starting backup of VM 100
+INFO: backup mode: snapshot
+INFO: <span class="o">vzdump-qemu-100-…vma.zst</span> (2.86 GB)
+INFO: backup finished successfully
+
+<span class="c"># restore to a new VM id — the real test</span>
+<span class="p">root@HP01:~#</span> qmrestore vzdump-qemu-100-….vma.zst <span class="f">200</span>
+restore vma archive … progress 100% <span class="o">OK</span>
+
+<span class="c"># back up the hypervisor config</span>
+<span class="p">root@HP01:~#</span> tar -czf hp01-config.tar.gz \
+  /etc/pve /etc/network/interfaces /etc/hosts …
+<span class="o">hp01-config-20260608.tar.gz</span> (15 KB)</pre>
+          </div>
+          <div class="demo-shots demo-shots-2">
+            <figure class="shot"><img src="img/pve-backup-gui.png" alt="Proxmox GUI backup dialog"><figcaption>GUI · vzdump</figcaption></figure>
+            <figure class="shot"><img src="img/pve-backup-done.png" alt="Backup completed"><figcaption>Result · 2.86 GB</figcaption></figure>
+          </div>
+        </div>
+      </div>
+      <div class="prob-section" data-reveal>
+        <h3>What went wrong: the NFS problem</h3>
+        <div class="prob-grid">
+          <div class="prob-card">
+            <span class="prob-label">The problem</span>
+            <h3>"Read-only file system"</h3>
+            <p>Adding the NFS share to Proxmox failed — backups could not be written to the NAS at all.</p>
+          </div>
+          <div class="prob-card">
+            <span class="prob-label">The fix</span>
+            <h3>rw, no_root_squash</h3>
+            <p>The OpenMediaVault export was read-only. Changed the NFS share options to <code>rw,no_root_squash</code>, remounted, and verified with a test write.</p>
+          </div>
+          <div class="prob-card prob-lesson">
+            <span class="prob-label">The lesson</span>
+            <h3>Never trust an unwritten target</h3>
+            <p>Verify export options on both ends before relying on a backup target — and test a restore, not just the backup job.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 · STOP 4 RETURN -->
+  <section class="slide" id="s-return4" data-theme="scene" data-fly="0.74" data-zoom="1.0" data-marker="4">
+  </section>
+
+  <!-- ============================================================
+       STOP 5 — Takeaways & Q&A
+       ============================================================ -->
+
+  <!-- 18 · FLIGHT TO STOP 5 -->
+  <section class="slide" id="s-flight5" data-theme="scene" data-fly="1.0" data-zoom="1.0" data-marker="5" data-dur="1.8">
+  </section>
+
+  <!-- 19 · STOP 5 MARKER -->
+  <section class="slide" id="s-stop5" data-theme="scene" data-fly="1.0" data-zoom="1.0" data-marker="5" data-dur="1.5">
+  </section>
+
+  <!-- 20 · STOP 5 CONTENT — Takeaways -->
+  <section class="slide slide-surface" id="s-content5" data-theme="surface" data-stop="5">
+    <div class="slide-wrap">
+      <div class="kicker" data-reveal>05 — Takeaways</div>
+      <h2 class="big" data-reveal>Six things to remember.</h2>
+      <div class="takeaways-grid">
+        <div class="takeaway-card" data-reveal>
+          <div class="t-icon"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4 L20 20 M8 12 L20 4 L32 12"/><circle cx="20" cy="28" r="6"/><path d="M20 28 L20 30"/><circle cx="20" cy="28" r="2" fill="currentColor" stroke="none"/></svg></div>
+          <div class="t-card-text">
+            <span class="t-num">01</span>
+            <h3>A snapshot is not a backup.</h3>
+            <p>It depends on the base disk — when the storage dies, the snapshot dies too.</p>
+          </div>
+        </div>
+        <div class="takeaway-card" data-reveal>
+          <div class="t-icon"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="12" width="28" height="24" rx="4"/><rect x="10" y="16" width="12" height="8" rx="2"/><line x1="10" y1="28" x2="30" y2="28"/><line x1="6" y1="20" x2="34" y2="20" stroke-dasharray="2 2"/></svg></div>
+          <div class="t-card-text">
+            <span class="t-num">02</span>
+            <h3>Always two layers.</h3>
+            <p>Back up the VMs <i>and</i> the hypervisor config — one without the other protects nothing.</p>
+          </div>
+        </div>
+        <div class="takeaway-card" data-reveal>
+          <div class="t-icon"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="20" cy="20" r="14"/><circle cx="20" cy="20" r="8" fill="currentColor" stroke="none" opacity=".3"/><path d="M20 10 L20 20 L26 14"/></svg></div>
+          <div class="t-card-text">
+            <span class="t-num">03</span>
+            <h3>Snapshot mode for production.</h3>
+            <p>Zero downtime; keep suspend and stop for maintenance windows.</p>
+          </div>
+        </div>
+        <div class="takeaway-card" data-reveal>
+          <div class="t-icon"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="10" height="10" rx="2"/><rect x="22" y="8" width="10" height="10" rx="2"/><rect x="8" y="22" width="10" height="10" rx="2"/><circle cx="27" cy="27" r="5" fill="currentColor" stroke="none" opacity=".3"/><path d="M27 24 V30"/><path d="M24 27 L30 27"/></svg></div>
+          <div class="t-card-text">
+            <span class="t-num">04</span>
+            <h3>Separate storage, 3-2-1.</h3>
+            <p>Three copies, two media, one off-site — mine live on the CLOIF2 NAS.</p>
+          </div>
+        </div>
+        <div class="takeaway-card" data-reveal>
+          <div class="t-icon"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20 L14 14 L20 20 L26 14 L32 20"/><circle cx="20" cy="28" r="4" fill="currentColor" stroke="none" opacity=".3"/><path d="M20 26 V30"/></svg></div>
+          <div class="t-card-text">
+            <span class="t-num">05</span>
+            <h3>A backup only counts once tested.</h3>
+            <p>Every backup here was verified with <code>qmrestore</code> — restore is the real proof.</p>
+          </div>
+        </div>
+        <div class="takeaway-card" data-reveal>
+          <div class="t-icon"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="24" height="20" rx="4"/><line x1="8" y1="18" x2="32" y2="18"/><line x1="14" y1="14" x2="14" y2="14" stroke-width="2"/><line x1="20" y1="14" x2="20" y2="14" stroke-width="2"/><line x1="26" y1="14" x2="26" y2="14" stroke-width="2"/><path d="M14 26 L20 22 L26 26"/><path d="M16 24 L20 28 L24 24"/></svg></div>
+          <div class="t-card-text">
+            <span class="t-num">06</span>
+            <h3>Never trust an unwritten target.</h3>
+            <p>Verify export options on both ends before relying on a backup target.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 21 · Q&A — wide shot, zoom out -->
+  <section class="slide slide-dark" id="s-qa" data-theme="scene" data-fly="0" data-zoom="1.6" data-dur="2.4">
+    <div class="slide-wrap end-wrap qa-wrap">
+      <div class="qa-header" data-reveal>
+        <h2 class="big end-title">Questions?</h2>
+        <p class="end-sub">We are happy to answer.</p>
+      </div>
+      <div class="qa-info" data-reveal>
+        <div class="qa-card"><span class="qa-label">Team</span><span class="qa-value">Moshe Sarkis Marios &amp; Christophe Thill</span></div>
+        <div class="qa-card"><span class="qa-label">Specialization</span><span class="qa-value">VM Backup &amp; Hypervisor Backup</span></div>
+        <div class="qa-card"><span class="qa-label">Program</span><span class="qa-value">BTS Cloud Computing</span></div>
+        <div class="qa-card"><span class="qa-label">School</span><span class="qa-value">Lycée Guillaume Kroll, Luxembourg</span></div>
+        <div class="qa-card"><span class="qa-label">Teachers</span><span class="qa-value">Christian Rodesch &amp; Maurizio Spagnuolo</span></div>
+      </div>
+      <div class="mega-wordmark" data-reveal>VIRCL</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- deck chrome: progress, counter, controls -->
+<div class="deck-bar"><div id="deckBar"></div></div>
+<div class="deck-controls">
+  <span id="deckCounter" class="deck-counter">01 / 22</span>
+  <input id="deckJump" class="deck-jump" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" placeholder="01" aria-label="Jump to slide">
+  <button id="deckPrev" class="deck-btn" aria-label="Previous slide">←</button>
+  <button id="deckNext" class="deck-btn" aria-label="Next slide">→</button>
+  <button id="deckFs" class="deck-btn" aria-label="Fullscreen">⛶</button>
+</div>
+<div class="deck-hint"><kbd>←</kbd><kbd>→</kbd> navigate · <kbd>F</kbd> fullscreen</div>
+
+<!-- screenshot lightbox -->
+<div class="lightbox" id="lightbox"><img src="" alt="Screenshot, enlarged"></div>
+
+<!-- vendored libraries (UMD builds — work offline, no build step) -->
+<script src="vendor/gsap.min.js?v=2"></script>
+<script src="vendor/three.min.js?v=2"></script>
+
+<!-- app modules -->
+<script src="js/scene3d.js?v=7"></script>
+<script src="js/deck.js?v=7"></script>
+<script src="js/ui.js?v=7"></script>
+<script src="js/main.js?v=7"></script>
+</body>
+</html>

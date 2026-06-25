@@ -83,6 +83,21 @@
         .content li { margin-bottom: 0.25rem; }
         .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
         .tag { padding: 0.3rem 0.75rem; border-radius: 999px; border: 1px solid var(--border-color); font-size: 0.82rem; font-weight: 600; color: var(--border-color); }
+        .resources { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem; }
+        .resource-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.1rem;
+            border-radius: 999px;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .resource-btn:hover { background: var(--border-color); color: white; }
         @media (max-width: 768px) {
             main { padding: 110px 1rem 1rem; }
             .section { padding: 2rem; }
@@ -138,6 +153,12 @@
                     This project gave me hands-on experience with NAS administration, RAID configuration,
                     file sharing protocols, and Linux-based server management through a web UI.
                 </p>
+                <h2>Project Resources</h2>
+                <div class="resources">
+                    <a class="resource-btn" href="documents/NAS_Project_Team2.pdf" target="_blank" rel="noopener noreferrer">
+                        📄 Documentation
+                    </a>
+                </div>
             </div>
         </section>
     </main>

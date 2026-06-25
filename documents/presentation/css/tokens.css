@@ -1,0 +1,35 @@
+/* ============================================================
+   DESIGN TOKENS — single source of truth (per build brief §2)
+   ============================================================ */
+:root {
+  /* color */
+  --bg-scene:    #D0E1EB;             /* icy light blue, behind the 3D world      */
+  --ink:         #050419;             /* near-black navy: text, dark btns, footer */
+  --surface:     #FCFCFC;             /* off-white light content sections         */
+  --accent:      #0000EE;             /* electric blue: arrows, links             */
+  --accent-glow: #3932DC;             /* indigo: the glowing scroll path          */
+  --muted:       rgba(5, 4, 25, 0.6); /* secondary paragraph text                 */
+
+  /* type */
+  --font: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* type scale (desktop reference, clamped for mobile) */
+  --fs-h1:   clamp(40px, 8vw, 96px);      /* hero H1            */
+  --fs-h2:   clamp(32px, 4.4vw, 56px);    /* section H2         */
+  --fs-lead: clamp(18px, 2vw, 24px);      /* lead paragraph     */
+  --fs-body: 17px;                        /* body copy          */
+  --fs-ui:   13px;                        /* nav / button label */
+
+  /* spacing rhythm */
+  --pad-section: 120px;   /* Standards + FAQ vertical padding  */
+  --pad-footer:  96px;    /* CTA + footer vertical padding     */
+  --gap-grid:    32px;    /* feature grid gap                  */
+
+  /* chrome */
+  --header-h: 80px;
+  --radius-pill: 156px;
+  --radius-card: 20px;
+
+  /* motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
